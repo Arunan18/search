@@ -27,7 +27,7 @@ public class PlantSearchPage {
 	@FindBy(xpath = "//div[@class='ant-table-filter-dropdown']/div/div/button[1]")
 	public static WebElement PlantCodeSearchBtn;
 
-	@FindBy(xpath = "//thead[@class='ant-table-thead']/tr/th[3]/div/span[2]")
+	@FindBy(xpath = "//thead[@class='ant-table-thead']/tr/th[1]/div/span[2]")
 	public static WebElement PlantCodeSearch;
 	
 	@FindBy(xpath = "//thead[@class='ant-table-thead']/tr/th[2]/div/span[2]")
@@ -53,7 +53,7 @@ public class PlantSearchPage {
 	
 	
 	public static String ColumnBefore = "//tbody[@class='ant-table-tbody']/tr[";
-	public static String ColumnAfter="]/td[3]";
+	public static String ColumnAfter="]/td[1]"; 
 	
 	
 }

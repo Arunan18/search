@@ -27,7 +27,7 @@ public class MainNavigationTest extends DriverIntialization{
 //	Navigate Master
 	public static void navigateMaster() throws InterruptedException {
 		PageFactory.initElements(driver, mnp);
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 		MainNavigationPages.Master.click();
 	}
 	

@@ -39,12 +39,13 @@ public class Test_Script extends DriverIntialization{
 		
 //		STEP 4 : Navigate Plant Sub Module
 		SubNavigationTest.navigatePlant();
-		PlantSearchTest.checkBeforeSearchData(PlantSearchTest.PlanteCode);
 		
+		PlantSearchTest.checkBeforeSearchData("RMC");
+		driver.navigate().refresh();
 //		STEP 5 : Check Plant Code Search Button Properties
 		PlantSearchTest.plantCodeSearch();
 		
-//		STEP 6 : Click Plant Code Search Button
+//		STEP 6 : Click Plant Code Search Button 
 		PlantSearchTest.ClickPlantCodeSearch();
 		
 //		STEP 7 : Check Plant Code Text Box
@@ -53,8 +54,10 @@ public class Test_Script extends DriverIntialization{
 //		STEP 8 : Input Search Data
 		PlantSearchTest.inputDataSearch();
 		
-		PlantSearchTest.checkAfterSearchData(PlantSearchTest.PlanteCode);
+
+		PlantSearchTest.checkAfterSearchData("RMC");
 		 
+		
 		
 		
 		

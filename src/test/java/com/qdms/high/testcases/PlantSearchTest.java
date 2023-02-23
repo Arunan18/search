@@ -138,6 +138,58 @@ public class PlantSearchTest extends DriverIntialization {
 		}
 	}
 
+
+//Plant Code Search Button Properties
+public static void plantCodeSearchButton() throws InterruptedException {
+	PageFactory.initElements(driver, psp);
+
+//	Check Plant Code Search TextBox Visible
+	testCase = extent.createTest("Plant Code Search Button Visible");
+	try {
+		Thread.sleep(1000);
+		Assert.assertEquals(PlantSearchPage.PlantCodeSearchTextBox.isDisplayed(), true);
+		testCase.log(Status.INFO, "Plant Code Search Button Visible");
+		testCase.log(Status.PASS, "Plant Code Search Button Visible Script Pass").assignCategory("High-Severity");
+	} catch (AssertionError e) {
+		PlantCodeSearchButtonVisible = false;
+		testCase.log(Status.INFO, "Plant Code Search Button Not Visible");
+		testCase.log(Status.FAIL, "Plant Code Search Button Not Visible").assignCategory("High-Severity");
+	} catch (NoSuchElementException e) {
+		PlantCodeSearchButtonVisible = false;
+		testCase.log(Status.INFO, "Dont have Plant Code Search Button Locator");
+		testCase.log(Status.FAIL, "Dont have Plant Code Search Button Locator, So Smoke Fail")
+				.assignCategory("High-Severity");
+	}
+
+	if (PlantCodeSearchButtonVisible) {
+//		Check Plant Code Search TextBoxEnable
+		testCase = extent.createTest("Plant Code Search Button Enable");
+		try {
+			Assert.assertEquals(PlantSearchPage.PlantCodeSearchTextBox.isEnabled(), true);
+			testCase.log(Status.INFO, "Plant Code Search Button Enable");
+			testCase.log(Status.PASS, "Plant Code Search Button Enable Script Pass")
+					.assignCategory("High-Severity");
+		} catch (AssertionError e) {
+			PlantCodeSearchButtonEnable = false;
+			testCase.log(Status.INFO, "Plant Code Search Button Not Enable");
+			testCase.log(Status.FAIL, "Plant Code Search Button Not Enable").assignCategory("High-Severity");
+		}
+
+		if (PlantCodeSearchButtonEnable) {
+//			
+		}
+	}
+}
+
+//Plant Code input TextBox Properties
+public static void plantCodeSearchButtonClick() throws InterruptedException {
+	PageFactory.initElements(driver, psp);
+
+	if(PlantCodeSearchButtonVisible && PlantCodeSearchButtonEnable) {
+		PlantSearchPage.PlantCodeSearchBtn.clear();
+	}
+}
+
 //	Input Search Data
 	public static void inputDataSearch() throws IOException, InterruptedException {
 		PageFactory.initElements(driver, psp);
@@ -148,7 +200,7 @@ public class PlantSearchTest extends DriverIntialization {
 			XSSFSheet sheet = workbook.getSheet("PlantSearch");
 
 			int rowcount = sheet.getLastRowNum();
-			for (int i = 0; i <= rowcount; i++) {
+			for (int i = 0; i <= rowcount; i++) { 
 				XSSFRow row = sheet.getRow(i);
 
 				boolean check = (boolean) row.getCell(0).getBooleanCellValue();
@@ -157,10 +209,21 @@ public class PlantSearchTest extends DriverIntialization {
 
 				if (check) {
 					Thread.sleep(2000);
-					PlantSearchPage.PlantCodeSearchTextBox.sendKeys(SBU);
-					checkWrongDataFilter(SBU);
+					PlantSearchPage.PlantCodeSearchTextBox.sendKeys("RMC");
+					
+					
+					if(BeforeFilteringDataCount == AfterFilteringDataCount) {
+						testCase = extent.createTest("Check Correct Data Count Filter");
+						testCase.log(Status.INFO, "Correct Data Count Filtered");
+						testCase.log(Status.PASS, "Correct Data Count Filtered").assignCategory("High-Severity");
+					} else {
+						testCase = extent.createTest("Check Correct Data Count Filter");
+						testCase.log(Status.INFO, "Wrong Data Count Filtered");
+						testCase.log(Status.FAIL, "Wrong Data Count Filtered").assignCategory("High-Severity");
+					}
+					
 				}
-
+ 
 			}
 		}
 	}
@@ -175,10 +238,9 @@ public class PlantSearchTest extends DriverIntialization {
 				WebElement code = driver
 						.findElement(By.xpath(PlantSearchPage.ColumnBefore + j + PlantSearchPage.ColumnAfter));
 				String CodeName = code.getText();
-				System.out.println(CodeName);
 				if (!CodeName.contains(PlantCode)) {
-					TableData = false;
-				}
+					TableData = false; 
+				} 
 			}
 			PlantSearchPage.NextPageBtn.click();
 			Enablity = PlantSearchPage.NextPageBtn.isEnabled();
@@ -194,30 +256,33 @@ public class PlantSearchTest extends DriverIntialization {
 		}
 
 	}
-
+ 
+	
+	
 //	BeforeFilteringDataCount
 	public static void checkBeforeSearchData(String Sbu) throws InterruptedException {
 		PageFactory.initElements(driver, psp);
 		boolean Enablity = PlantSearchPage.NextPageBtn.isEnabled();
 		while (Enablity) {
-			Thread.sleep(3000);
+//			Thread.sleep(3000);
 			for (int j = 2; j <= PlantSearchPage.PlantCodeColumn.size(); j++) {
 				WebElement code = driver
 						.findElement(By.xpath(PlantSearchPage.ColumnBefore + j + PlantSearchPage.ColumnAfter));
-				String CodeName = code.getText();
-				System.out.println(CodeName);
+				Thread.sleep(1000);
+				String CodeName = code.getText(); 
 				if (CodeName.contains(Sbu)) {
 					BeforeFilteringDataCount = BeforeFilteringDataCount +1;
 				}
 			}
 			PlantSearchPage.NextPageBtn.click();
 			Enablity = PlantSearchPage.NextPageBtn.isEnabled();
-		}
-		System.out.println("BeforeFilteringDataCount : " + BeforeFilteringDataCount);
+			}
+		System.out.println("BeforeFilteringDataCount : "+BeforeFilteringDataCount);
+		driver.navigate().refresh();
 	}
-
-//	BeforeFilteringDataCount
-	public static void checkAfterSearchData(String Pcode) throws InterruptedException {
+ 
+//	afterFilteringDataCount
+	public static void checkAfterSearchData(String Sbu) throws InterruptedException {
 		PageFactory.initElements(driver, psp);
 		boolean Enablity = PlantSearchPage.NextPageBtn.isEnabled();
 		while (Enablity) {
@@ -225,15 +290,27 @@ public class PlantSearchTest extends DriverIntialization {
 			for (int j = 2; j <= PlantSearchPage.PlantCodeColumn.size(); j++) {
 				WebElement code = driver
 						.findElement(By.xpath(PlantSearchPage.ColumnBefore + j + PlantSearchPage.ColumnAfter));
-				String CodeName = code.getText();
-				System.out.println(CodeName);
-				if (CodeName.contains(Pcode)) {
+				Thread.sleep(1000);
+				String CodeName = code.getText(); 
+				if (CodeName.contains(Sbu)) {
 					AfterFilteringDataCount = AfterFilteringDataCount +1;
+				}
+				if (!CodeName.contains(Sbu)) {
+					TableData = false; 
 				}
 			}
 			PlantSearchPage.NextPageBtn.click();
 			Enablity = PlantSearchPage.NextPageBtn.isEnabled();
-		}
+			if (TableData) {
+				testCase = extent.createTest("Check Wrong Data Filter");
+				testCase.log(Status.INFO, "Unwanted Data Not Filtering");
+				testCase.log(Status.PASS, "Filter Correctly Working").assignCategory("High-Severity");
+			} else {
+				testCase = extent.createTest("Check Wrong Data Filter");
+				testCase.log(Status.INFO, "Unwanted Data Filtering");
+				testCase.log(Status.FAIL, "Filter Wrongly Working").assignCategory("High-Severity");
+			}
+			}
 		System.out.println("AfterFilteringDataCount : "+AfterFilteringDataCount);
 	}
 }
